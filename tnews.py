@@ -14,6 +14,8 @@ from keras.layers import Lambda, Dense
 from keras.losses import kullback_leibler_divergence as kld
 from tqdm import tqdm
 
+bert4keras.__version__
+
 labels = [
     "100", "101", "102", "103", "104", "106", "107", "108", "109", "110", "112",
     "113", "114", "115", "116"
@@ -38,6 +40,12 @@ def load_data(filename):
     return D
 
 
+import os
+
+# +
+# os.makedirs('/root/CLUE-master/baselines/CLUEdataset/tnews/')
+# -
+
 # 加载数据集
 train_data = load_data(
     '/root/CLUE-master/baselines/CLUEdataset/tnews/train.json'
@@ -56,7 +64,7 @@ class data_generator(DataGenerator):
     def __iter__(self, random=False):
         batch_token_ids, batch_segment_ids, batch_labels = [], [], []
         for is_end, (text, label) in self.sample(random):
-            token_ids, segment_ids = tokenizer.encode(text, maxlen=maxlen)
+            token_ids, segment_ids = tokenizer.encode(text)
             for i in range(2):
                 batch_token_ids.append(token_ids)
                 batch_segment_ids.append(segment_ids)
